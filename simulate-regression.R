@@ -128,7 +128,7 @@ rd[[1]]
 (obs.slp <- rd[[1]]$mod.slp)
 y <- rd[[2]]
 
-Nreps <- 100 # one less than total, as the observed data is counted in the vector of outputs - explained below
+Nreps <- 1000 # simulate one less than total desired, as the observed data is counted in the vector of outputs - explained below
 sim.slps <- replicate(Nreps-1,randRegression(x,y))
 sim.slps <- c(obs.slp,sim.slps)
 hist(sim.slps)
@@ -137,6 +137,9 @@ abline(v=obs.slp)
 # where does obs.slp fall in distribution of sim.slps
 obs.slp
 rank(sim.slps)[1]
+
+#recall pval from regression model
+obs.pval
 
 # significance calculation
 # two-tailed
