@@ -32,23 +32,8 @@ coefficients(summary(fit))[2,4]
 fit.res <- c(coefficients(fit),
              coefficients(summary(fit))[2,4])
       
-# first question is whether regression is an unbiased estimator of true coefficients. In other words, if we run the simulation above 1000 times, on average will the intercept and slope of the regression converge on the input variables? To do this, let's wrap up everything above in a function
-
-simRegression <- function(x,int=0,slp=1,rsd=1,show.plot=F,returny=F)
-{
-  y <- int + slp*x + rnorm(length(x),sd = rsd)
-  fit <- lm(y~x)
-  if (show.plot) {
-    plot(y~x)
-    abline(fit)
-  }
-  cfit <- coefficients(fit)
-  mod.rsd <- sd(residuals(fit))
-  pval <- coefficients(summary(fit))[2,4]
-  results <- data.frame(N = length(x),true.int=int,true.slp=slp,true.rsd=rsd,mod.int=cfit[1],mod.slp=cfit[2],mod.rsd=mod.rsd,pval=pval)
-  row.names(results) <- NULL
-  if (returny) return(list(results,y)) else return(results)
-}
+# first question is whether regression is an unbiased estimator of true coefficients. In other words, if we run the simulation above 1000 times, on average will the intercept and slope of the regression converge on the input variables? To do this, let's wrap up everything above in a function, loaded from accompanying file.
+source('simRegression.R')
 
 # try out function
 sim.res <- simRegression(x,int=5,slp=0.5,rsd=4,show.plot=T,returny=F)
@@ -112,13 +97,7 @@ plot(yr~x);abline(fit)
 (sim.slp <- coefficients(fit)[2])
 
 # write function to randomize data and return slope
-randRegression <- function(x,y,show.plot=F)
-{
-  yr <- sample(y,length(y),replace=F)
-  if (show.plot) plot(yr~x)
-  fit <- lm(yr~x)
-  return(coefficients(fit)[2])
-}
+source('randRegression.R')
 
 # start again with a new data set, and calculate significance by replicating randRegression
 # generate a random data set
